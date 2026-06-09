@@ -903,7 +903,8 @@
     }
 
     /* ─── PDF MODAL ─── */
-    .pdf-modal {
+    /* ─── CASE STUDY MODAL ─── */
+    .case-modal {
       position: fixed;
       inset: 0;
       z-index: 200;
@@ -913,49 +914,41 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 64px 32px 32px;
+      padding: 32px;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.35s var(--ease);
     }
-    .pdf-modal.open {
+    .case-modal.open {
       opacity: 1;
       pointer-events: auto;
     }
-    @media (max-width: 640px) {
-      .pdf-modal { padding: 60px 12px 12px; }
-    }
+    @media (max-width: 640px) { .case-modal { padding: 12px; } }
 
-    .pdf-modal-bar {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 24px;
-      background: rgba(5, 5, 7, 0.9);
-      border-bottom: 1px solid var(--border);
-      backdrop-filter: blur(20px);
+    .case-modal-inner {
+      position: relative;
+      width: 100%;
+      max-width: 880px;
+      max-height: calc(100vh - 64px);
+      background: var(--bg-elev);
+      border: 1px solid var(--border-strong);
+      border-radius: 6px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      transform: scale(0.96) translateY(20px);
+      transition: transform 0.45s var(--ease);
+      -webkit-overflow-scrolling: touch;
     }
-    .pdf-modal-title {
-      font-family: var(--mono);
-      font-size: 12px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--text-soft);
-      display: flex; align-items: center; gap: 12px;
+    .case-modal.open .case-modal-inner {
+      transform: scale(1) translateY(0);
     }
-    .pdf-modal-title::before {
-      content: '';
-      width: 6px; height: 6px;
-      background: var(--accent);
-      border-radius: 50%;
-      box-shadow: 0 0 10px var(--accent-glow);
-    }
-    .pdf-modal-close {
-      width: 36px; height: 36px;
-      background: transparent;
+    @media (max-width: 640px) { .case-modal-inner { max-height: calc(100vh - 24px); } }
+
+    .case-modal-close {
+      position: absolute;
+      top: 20px; right: 20px;
+      width: 38px; height: 38px;
+      background: rgba(5, 5, 7, 0.7);
       border: 1px solid var(--border-strong);
       border-radius: 50%;
       color: var(--text);
@@ -965,78 +958,228 @@
       font-size: 18px;
       line-height: 1;
       transition: all 0.3s var(--ease);
+      z-index: 3;
+      backdrop-filter: blur(10px);
     }
-    .pdf-modal-close:hover {
+    .case-modal-close:hover {
       background: var(--accent);
       color: var(--bg);
       border-color: var(--accent);
       transform: rotate(90deg);
     }
 
-    .pdf-modal-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      max-width: 1100px;
-      background: #1a1a1a;
-      border: 1px solid var(--border-strong);
-      border-radius: 4px;
-      overflow: hidden;
-      transform: scale(0.96);
-      transition: transform 0.4s var(--ease);
-    }
-    .pdf-modal.open .pdf-modal-inner {
-      transform: scale(1);
+    .case-modal-content {
+      padding: 0;
     }
 
-    .pdf-modal iframe,
-    .pdf-modal embed {
-      width: 100%;
-      height: 100%;
-      border: none;
-      display: block;
-      background: #1a1a1a;
+    /* HERO */
+    .case-hero {
+      padding: 64px 56px 48px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(245, 233, 168, 0.04) 0%, transparent 100%);
+    }
+    @media (max-width: 640px) { .case-hero { padding: 48px 24px 32px; } }
+
+    .case-eyebrow {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      padding: 6px 14px;
+      border: 1px solid var(--accent-soft);
+      border-radius: 100px;
+      margin-bottom: 24px;
     }
 
-    /* fallback link for mobile when iframe doesn't render PDF */
-    .pdf-fallback {
-      position: absolute;
-      inset: 0;
-      display: none;
+    .case-headline {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      color: var(--text);
+      margin-bottom: 20px;
+      max-width: 700px;
+    }
+
+    .case-intro {
+      font-family: var(--display);
+      font-weight: 300;
+      font-size: clamp(15px, 1.5vw, 18px);
+      line-height: 1.55;
+      color: var(--text-soft);
+      margin-bottom: 36px;
+      max-width: 620px;
+    }
+
+    .case-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+    @media (max-width: 760px) { .case-metrics { grid-template-columns: repeat(2, 1fr); } }
+
+    .case-metric {
+      display: flex;
       flex-direction: column;
+      gap: 6px;
+    }
+    .case-metric-value {
+      font-family: var(--display);
+      font-weight: 500;
+      font-size: clamp(22px, 2.6vw, 30px);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: var(--accent);
+    }
+    .case-metric-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      line-height: 1.4;
+    }
+
+    /* SECTIONS */
+    .case-section {
+      padding: 48px 56px;
+      border-bottom: 1px solid var(--border);
+    }
+    @media (max-width: 640px) { .case-section { padding: 36px 24px; } }
+
+    .case-section-meta {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .case-section-num {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      padding: 4px 10px;
+      border: 1px solid var(--accent-soft);
+      border-radius: 100px;
+    }
+    .case-section-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .case-section-title {
+      font-family: var(--display);
+      font-weight: 500;
+      font-size: clamp(22px, 2.6vw, 30px);
+      line-height: 1.15;
+      letter-spacing: -0.015em;
+      color: var(--text);
+      margin-bottom: 24px;
+      max-width: 680px;
+    }
+    .case-section-body p {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text-soft);
+      margin-bottom: 16px;
+      max-width: 680px;
+    }
+    .case-section-body p:last-child { margin-bottom: 0; }
+
+    /* PILLARS (Solution) */
+    .case-pillars {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-top: 8px;
+    }
+    .case-pillar {
+      padding: 22px 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      position: relative;
+      transition: all 0.3s var(--ease);
+    }
+    .case-pillar::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 24px; bottom: 24px;
+      width: 2px;
+      background: var(--accent);
+    }
+    .case-pillar h4 {
+      font-family: var(--display);
+      font-weight: 500;
+      font-size: 16px;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .case-pillar p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-soft);
+    }
+
+    /* RESULTS metrics (bigger) */
+    .case-metrics.results-metrics .case-metric {
+      padding: 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+    .case-metrics.results-metrics .case-metric-value {
+      font-size: clamp(26px, 3.2vw, 38px);
+      margin-bottom: 6px;
+    }
+    .case-metrics.results-metrics .case-metric-label {
+      letter-spacing: 0.08em;
+      text-transform: none;
+      font-size: 11px;
+      font-family: var(--display);
+      color: var(--text-soft);
+    }
+
+    /* PROOF */
+    .case-proof {
+      padding: 24px 56px;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+    @media (max-width: 640px) { .case-proof { padding: 20px 24px; font-size: 9px; letter-spacing: 0.14em; } }
+
+    .case-modal-cta {
+      display: flex;
       align-items: center;
       justify-content: center;
-      gap: 24px;
-      padding: 32px;
-      text-align: center;
-      color: var(--text);
-    }
-    .pdf-modal.fallback-mode .pdf-fallback { display: flex; }
-    .pdf-modal.fallback-mode iframe { display: none; }
-    .pdf-fallback p {
-      font-size: 16px;
-      color: var(--text-soft);
-      max-width: 320px;
-    }
-    .pdf-fallback a {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      padding: 16px 28px;
+      gap: 14px;
+      padding: 24px;
       background: var(--accent);
       color: var(--bg);
       font-family: var(--mono);
-      font-size: 13px;
-      letter-spacing: 0.12em;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       text-decoration: none;
-      border-radius: 100px;
-      transition: all 0.3s var(--ease);
+      transition: all 0.35s var(--ease);
     }
-    .pdf-fallback a:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 24px var(--accent-soft);
+    .case-modal-cta:hover {
+      background: var(--text);
     }
+    .case-modal-cta .arrow { transition: transform 0.35s var(--ease); }
+    .case-modal-cta:hover .arrow { transform: translateX(4px); }
 
     body.modal-open {
       overflow: hidden;
@@ -1270,7 +1413,9 @@
         padding: 18px 28px;
         min-height: 50px;
       }
-      .pdf-modal-close {
+      .pdf-modal-close,
+      .case-modal-close,
+      .service-modal-close {
         width: 44px; height: 44px;
         font-size: 22px;
       }
@@ -1294,11 +1439,6 @@
       /* hero actions stack better */
       .hero-actions { gap: 18px; }
       .status { font-size: 11px; }
-
-      /* modal */
-      .pdf-modal { padding: 60px 8px 8px; }
-      .pdf-modal-bar { height: 60px; padding: 0 16px; }
-      .pdf-modal-title { font-size: 11px; }
 
       /* photo placeholder smaller on mobile */
       .hero-visual { max-width: 240px; }
@@ -1622,7 +1762,7 @@
 
       <div class="case-grid">
 
-        <a class="case-card reveal" data-pdf-el="beauty-el.pdf" data-pdf-en="beauty-en.pdf" data-title-el="Beauty Industry · Case Study" data-title-en="Beauty Industry · Case Study" href="#">
+        <a class="case-card reveal" data-case-id="beautyweb" href="#">
           <div class="case-visual">
             <svg viewBox="0 0 240 240" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M 80 80 L 80 70 Q 80 64 86 64 L 114 64 Q 120 64 120 70 L 120 80" />
@@ -1654,7 +1794,7 @@
           </div>
         </a>
 
-        <a class="case-card reveal" data-pdf-el="motorcycle-el.pdf" data-pdf-en="motorcycle-en.pdf" data-title-el="Motorcycle Industry · Case Study" data-title-en="Motorcycle Industry · Case Study" href="#">
+        <a class="case-card reveal" data-case-id="moto" href="#">
           <div class="case-visual">
             <svg viewBox="0 0 240 240" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M 60 120 Q 60 70 120 70 Q 180 70 180 120 L 180 150 Q 180 158 172 158 L 140 158 L 130 168 L 110 168 L 100 158 L 68 158 Q 60 158 60 150 Z" />
@@ -1686,7 +1826,7 @@
           </div>
         </a>
 
-        <a class="case-card reveal" data-pdf-el="lifestyle-el.pdf" data-pdf-en="lifestyle-en.pdf" data-title-el="Lifestyle Industry · Case Study" data-title-en="Lifestyle Industry · Case Study" href="#">
+        <a class="case-card reveal" data-case-id="aura" href="#">
           <div class="case-visual">
             <svg viewBox="0 0 240 240" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M 90 110 Q 86 132 96 154 L 96 200 Q 96 208 104 208 L 136 208 Q 144 208 144 200 L 144 154 Q 154 132 150 110 Z" />
@@ -1723,7 +1863,7 @@
         </a>
 
         <!-- MG — Tech E-shop -->
-        <a class="case-card reveal" data-pdf-el="mg-el.pdf" data-pdf-en="mg-en.pdf" data-title-el="Tech Industry · Case Study" data-title-en="Tech Industry · Case Study" href="#">
+        <a class="case-card reveal" data-case-id="mg" href="#">
           <div class="case-visual">
             <svg viewBox="0 0 240 240" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <!-- Laptop -->
@@ -1768,7 +1908,7 @@
         </a>
 
         <!-- IANOS — Premium Bookstore -->
-        <a class="case-card reveal" data-pdf-el="ianos-el.pdf" data-pdf-en="ianos-en.pdf" data-title-el="Book Industry · Case Study" data-title-en="Book Industry · Case Study" href="#">
+        <a class="case-card reveal" data-case-id="ianos" href="#">
           <div class="case-visual">
             <svg viewBox="0 0 240 240" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <!-- Open book -->
@@ -1814,7 +1954,7 @@
         </a>
 
         <!-- K-Beauty — Lead Generation -->
-        <a class="case-card reveal" data-pdf-el="kbeauty-el.pdf" data-pdf-en="kbeauty-en.pdf" data-title-el="K-Beauty Industry · Case Study" data-title-en="K-Beauty Industry · Case Study" href="#">
+        <a class="case-card reveal" data-case-id="kbeauty" href="#">
           <div class="case-visual">
             <svg viewBox="0 0 240 240" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <!-- Dropper bottle -->
@@ -1989,20 +2129,50 @@
     </div>
   </div>
 
-  <!-- ─── PDF MODAL ─── -->
-  <div class="pdf-modal" id="pdfModal" role="dialog" aria-modal="true" aria-labelledby="pdfTitle">
-    <div class="pdf-modal-bar">
-      <span class="pdf-modal-title" id="pdfTitle">Case Study</span>
-      <button class="pdf-modal-close" id="pdfClose" aria-label="Close">×</button>
-    </div>
-    <div class="pdf-modal-inner">
-      <iframe id="pdfFrame" title="Case Study PDF" src="about:blank"></iframe>
-      <div class="pdf-fallback">
-        <p data-lang="el" class="show">Το PDF δεν προβάλλεται απευθείας στο κινητό. Πάτησε για άνοιγμα σε νέα καρτέλα.</p>
-        <p data-lang="en">The PDF can't be displayed inline on this device. Tap below to open in a new tab.</p>
-        <a id="pdfFallbackLink" href="#" target="_blank" rel="noopener">
-          <span data-lang="el" class="show">Άνοιγμα PDF →</span>
-          <span data-lang="en">Open PDF →</span>
+  <!-- ─── CASE STUDY MODAL ─── -->
+  <div class="case-modal" id="caseModal" role="dialog" aria-modal="true" aria-labelledby="caseHeadline">
+    <div class="case-modal-inner">
+      <button class="case-modal-close" id="caseModalClose" aria-label="Close">×</button>
+      <div class="case-modal-content">
+        <div class="case-hero">
+          <div class="case-eyebrow" id="caseEyebrow"></div>
+          <h2 class="case-headline" id="caseHeadline"></h2>
+          <p class="case-intro" id="caseIntro"></p>
+          <div class="case-metrics hero-metrics" id="caseHeroMetrics"></div>
+        </div>
+
+        <div class="case-section">
+          <div class="case-section-meta">
+            <span class="case-section-num">01</span>
+            <span class="case-section-label" id="caseChallengeLabel"></span>
+          </div>
+          <h3 class="case-section-title" id="caseChallengeTitle"></h3>
+          <div class="case-section-body" id="caseChallengeBody"></div>
+        </div>
+
+        <div class="case-section">
+          <div class="case-section-meta">
+            <span class="case-section-num">02</span>
+            <span class="case-section-label" id="caseSolutionLabel"></span>
+          </div>
+          <h3 class="case-section-title" id="caseSolutionTitle"></h3>
+          <div class="case-pillars" id="casePillars"></div>
+        </div>
+
+        <div class="case-section">
+          <div class="case-section-meta">
+            <span class="case-section-num">03</span>
+            <span class="case-section-label" id="caseResultsLabel"></span>
+          </div>
+          <div class="case-metrics results-metrics" id="caseResultMetrics"></div>
+        </div>
+
+        <div class="case-proof" id="caseProof"></div>
+
+        <a href="#contact" class="case-modal-cta" id="caseModalCta">
+          <span data-lang="el" class="show">Ας μιλήσουμε</span>
+          <span data-lang="en">Let's talk</span>
+          <span class="arrow">→</span>
         </a>
       </div>
     </div>
@@ -2031,6 +2201,10 @@
       });
       langElLabel.classList.toggle('inactive', lang !== 'el');
       langEnLabel.classList.toggle('inactive', lang !== 'en');
+      // re-populate active case modal if open
+      if (typeof activeCaseId !== 'undefined' && activeCaseId) {
+        populateCase();
+      }
     }
     setLang('el');
     langToggle.addEventListener('click', () => setLang(currentLang === 'el' ? 'en' : 'el'));
@@ -2067,51 +2241,845 @@
     }, { threshold: 0.12 });
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-    // ─── PDF modal ───
-    const pdfModal = document.getElementById('pdfModal');
-    const pdfFrame = document.getElementById('pdfFrame');
-    const pdfClose = document.getElementById('pdfClose');
-    const pdfTitle = document.getElementById('pdfTitle');
-    const pdfFallbackLink = document.getElementById('pdfFallbackLink');
-
-    // iOS Safari often can't render PDFs in iframes — detect and offer external link
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-
-    function openPdf(url, title) {
-      pdfTitle.textContent = title || 'Case Study';
-      pdfFallbackLink.href = url;
-      if (isIOS) {
-        // skip iframe attempt on iOS; show direct link
-        pdfFrame.src = 'about:blank';
-        pdfModal.classList.add('fallback-mode');
-      } else {
-        pdfFrame.src = url;
-        pdfModal.classList.remove('fallback-mode');
+    // ─── case study modal ───
+    const caseStudies = {
+      "beautyweb": {
+            "el": {
+                  "eyebrow": "BEAUTY & COSMETICS · E-COMMERCE",
+                  "headline": "Από στάσιμο κατάλογο σε €381K αύξησης τζίρου ετησίως.",
+                  "intro": "Μια ολοκληρωμένη συνεργασία performance & consulting για ένα premium beauty e-shop — χτισμένη σε τρία χρόνια, με κορυφαία χρονιά το 2024.",
+                  "heroMetrics": [
+                        {
+                              "value": "+70.39%",
+                              "label": "Αύξηση τζίρου YoY"
+                        },
+                        {
+                              "value": "7.77x",
+                              "label": "Blended ROAS"
+                        },
+                        {
+                              "value": "22.365",
+                              "label": "Παραγγελίες (+45.4%)"
+                        },
+                        {
+                              "value": "€59.7K",
+                              "label": "Συνολικό ad spend"
+                        }
+                  ],
+                  "challengeTitle": "Ένα brand με δύναμη που είχε σταματήσει να αναπτύσσεται.",
+                  "challengeParas": [
+                        "Ο πελάτης είχε φτάσει σε plateau. Ο τζίρος ήταν στάσιμος παρά το ισχυρό προϊοντικό catalogue και την πιστή organic κοινότητα. Δεν υπήρχε στρατηγική κατεύθυνση στο performance marketing, το tracking ήταν περιορισμένο, οι καμπάνιες χωρίς σαφές πλαίσιο.",
+                        "Πέρα από τις διαφημίσεις, έλειπε η βαθιά κατανόηση της εποχικότητας του κλάδου, της κίνησης των ανταγωνιστών και του πώς αξιοποιείται σωστά η community του brand στα social."
+                  ],
+                  "solutionTitle": "Πλήρης εμπλοκή, από tracking έως TikTok.",
+                  "pillars": [
+                        {
+                              "title": "Θεμέλια",
+                              "text": "GA4 + Google Merchant Center setup, αναδόμηση Google Ads (PMax, Search, Brand) και Meta campaigns (CBO, Remarketing, Advantage+) από το μηδέν."
+                        },
+                        {
+                              "title": "Εποχικότητα & στρατηγική",
+                              "text": "Μηνιαίος σχεδιασμός εναρμονισμένος με τις κορυφές του beauty κλάδου, διαρκής ανάλυση ανταγωνισμού και προϊοντικής εποχικότητας πάνω σε τρία χρόνια κατηγορίας."
+                        },
+                        {
+                              "title": "Content & community",
+                              "text": "Δημιουργική κατεύθυνση σε TikTok, IG Lives και YouTube, και συντονισμός collaborations με MUA για organic ενίσχυση του brand."
+                        }
+                  ],
+                  "resultMetrics": [
+                        {
+                              "value": "+70.39%",
+                              "label": "Αύξηση τζίρου το 2024 (€381K vs €224K)"
+                        },
+                        {
+                              "value": "7.77x",
+                              "label": "Blended ROAS σε €59,754 συνολικό spend"
+                        },
+                        {
+                              "value": "+45.4%",
+                              "label": "Συναλλαγές, έφτασαν τις 22.365 παραγγελίες"
+                        },
+                        {
+                              "value": "8.24x",
+                              "label": "Google Ads ROAS (€229K conv. value)"
+                        }
+                  ],
+                  "proof": "Google Analytics 4 · Πραγματικά δεδομένα · Beauty & Cosmetics E-Shop"
+            },
+            "en": {
+                  "eyebrow": "BEAUTY & COSMETICS · E-COMMERCE",
+                  "headline": "Turning a stagnant catalogue into €381K of year-on-year growth.",
+                  "intro": "A full-scope performance & consulting partnership for a premium beauty e-shop — built over three years, peaking in 2024.",
+                  "heroMetrics": [
+                        {
+                              "value": "+70.39%",
+                              "label": "Revenue growth YoY"
+                        },
+                        {
+                              "value": "7.77x",
+                              "label": "Blended ROAS"
+                        },
+                        {
+                              "value": "22,365",
+                              "label": "Transactions (+45.4%)"
+                        },
+                        {
+                              "value": "€59.7K",
+                              "label": "Total ad spend"
+                        }
+                  ],
+                  "challengeTitle": "A solid brand that had simply stopped growing.",
+                  "challengeParas": [
+                        "The client had reached a plateau. Revenue was stagnant despite a strong product catalogue and a loyal organic following. There was no strategic guidance on performance marketing, tracking visibility was limited, and campaigns were running without a clear framework.",
+                        "Beyond the ads themselves, there was no deep understanding of the industry's seasonality, of competitor moves, or of how to properly leverage the brand's own engaged community across social channels."
+                  ],
+                  "solutionTitle": "Full-scope engagement, from tracking to TikTok.",
+                  "pillars": [
+                        {
+                              "title": "Foundations",
+                              "text": "GA4 + Google Merchant Center setup, restructured Google Ads (PMax, Search, Brand) and Meta campaigns (CBO, Remarketing, Advantage+) from the ground up."
+                        },
+                        {
+                              "title": "Seasonality & strategy",
+                              "text": "Monthly planning aligned to beauty-industry peaks, ongoing competitor analysis, and product seasonality built on three years of category immersion."
+                        },
+                        {
+                              "title": "Content & community",
+                              "text": "Creative direction across TikTok, IG Lives and YouTube, plus coordinated MUA collaborations for organic amplification of the brand."
+                        }
+                  ],
+                  "resultMetrics": [
+                        {
+                              "value": "+70.39%",
+                              "label": "Revenue growth in 2024 (€381K vs €224K)"
+                        },
+                        {
+                              "value": "7.77x",
+                              "label": "Blended ROAS on €59,754 total ad spend"
+                        },
+                        {
+                              "value": "+45.4%",
+                              "label": "Transactions, reaching 22,365 orders"
+                        },
+                        {
+                              "value": "8.24x",
+                              "label": "Google Ads ROAS (€229K conv. value)"
+                        }
+                  ],
+                  "proof": "Google Analytics 4 · Real account data · Beauty & Cosmetics E-Shop"
+            }
+      },
+      "moto": {
+            "el": {
+                  "eyebrow": "ΕΞΟΠΛΙΣΜΟΣ ΜΟΤΟ · E-COMMERCE",
+                  "headline": "Από €420K σε €614K σε τρία χρόνια πειθαρχημένης ανάπτυξης.",
+                  "intro": "Μια σχέση εμπιστοσύνης με έναν hands-on Marketing Manager. Αυξήσαμε το Google spend +22% και ο τζίρος ακολούθησε με +55%.",
+                  "heroMetrics": [
+                        {
+                              "value": "+23.2%",
+                              "label": "Τζίρος YoY (2025 vs 2024)"
+                        },
+                        {
+                              "value": "25.05x",
+                              "label": "Blended ROAS"
+                        },
+                        {
+                              "value": "1.11M",
+                              "label": "Sessions (+15.56%)"
+                        },
+                        {
+                              "value": "€24.5K",
+                              "label": "Συνολικό ad spend"
+                        }
+                  ],
+                  "challengeTitle": "Ένα δυνατό e-shop χωρίς ξεκάθαρη ψηφιακή στρατηγική.",
+                  "challengeParas": [
+                        "Όταν ξεκίνησε η συνεργασία το 2023, το e-shop εξοπλισμού μοτοσικλέτας είχε ισχυρή γκάμα και category authority, αλλά δεν είχε δομημένη performance marketing προσέγγιση. Οι καμπάνιες έτρεχαν χωρίς supplemental feeds, scripts ή σαφές scaling plan.",
+                        "Η εμπιστοσύνη έπρεπε να χτιστεί πρώτη. Ο Marketing Manager του πελάτη ήταν βαθιά εμπλεκόμενος — κάθε απόφαση έπρεπε να δικαιολογείται και κάθε επιπλέον ευρώ spend να συνδέεται άμεσα με μετρήσιμη αύξηση τζίρου."
+                  ],
+                  "solutionTitle": "Κέρδισε την εμπιστοσύνη, μετά πίεσε εκεί που αποδίδει.",
+                  "pillars": [
+                        {
+                              "title": "Τεχνικό βάθος",
+                              "text": "Google Ads Scripts για αυτοματισμούς, Supplemental Feeds για πλουσιότερα δεδομένα προϊόντων, και δομημένες PMax + Search campaigns γύρω από τις κατηγορίες με το υψηλότερο περιθώριο."
+                        },
+                        {
+                              "title": "Σταδιακή αύξηση budget",
+                              "text": "Χρόνο με χρόνο, το Google spend αυξήθηκε +22% — αλλά μόνο αφού αποδείξαμε κάθε βήμα. Ο τζίρος από Google ακολούθησε με +55% αύξηση το 2025."
+                        },
+                        {
+                              "title": "Meta ως υποστήριξη",
+                              "text": "Το Meta έπαιξε δευτερεύοντα ρόλο: prospecting και remarketing με ελεγχόμενο spend (€8,165 το 2025) — κρατήθηκε λιτό ενώ το Google έκανε τη δύσκολη δουλειά."
+                        }
+                  ],
+                  "resultMetrics": [
+                        {
+                              "value": "€614K",
+                              "label": "GA4 τζίρος το 2025 (+23.2% YoY)"
+                        },
+                        {
+                              "value": "25.05x",
+                              "label": "Blended ROAS σε €24,515 συνολικό spend"
+                        },
+                        {
+                              "value": "17.56x",
+                              "label": "Google Ads ROAS (€287K conv. value)"
+                        },
+                        {
+                              "value": "1.11M",
+                              "label": "Sessions το 2025 (+15.56% YoY)"
+                        }
+                  ],
+                  "proof": "Google Analytics 4 · Πραγματικά δεδομένα · Motorcycle Equipment E-Shop"
+            },
+            "en": {
+                  "eyebrow": "MOTORCYCLE EQUIPMENT · E-COMMERCE",
+                  "headline": "From €420K to €614K in three years of disciplined growth.",
+                  "intro": "A high-trust partnership with a hands-on Marketing Manager. We pushed Google spend +22%, and revenue followed with +55%.",
+                  "heroMetrics": [
+                        {
+                              "value": "+23.2%",
+                              "label": "Revenue YoY (2025 vs 2024)"
+                        },
+                        {
+                              "value": "25.05x",
+                              "label": "Blended ROAS"
+                        },
+                        {
+                              "value": "1.11M",
+                              "label": "Sessions (+15.56%)"
+                        },
+                        {
+                              "value": "€24.5K",
+                              "label": "Total ad spend"
+                        }
+                  ],
+                  "challengeTitle": "A solid e-shop without a clear digital strategy.",
+                  "challengeParas": [
+                        "When the partnership began in 2023, the motorcycle equipment e-shop had a strong product range and category authority, but no structured performance marketing approach. Campaigns ran without supplemental feeds, scripts, or a clear scaling plan.",
+                        "Trust had to be built first. The client's Marketing Manager was deeply involved, which meant every decision needed to be defensible — and every euro of incremental spend had to be tied directly to measurable revenue growth."
+                  ],
+                  "solutionTitle": "Earn trust, then push the budget where it works.",
+                  "pillars": [
+                        {
+                              "title": "Technical depth",
+                              "text": "Google Ads Scripts for automation, Supplemental Feeds for richer product data, and structured PMax + Search campaigns built around the highest-margin categories."
+                        },
+                        {
+                              "title": "Phased budget growth",
+                              "text": "Year-on-year, Google spend grew +22% — but only after we proved each increment. Revenue from Google followed with +55% growth in 2025."
+                        },
+                        {
+                              "title": "Meta as support",
+                              "text": "Meta played a secondary role: prospecting and remarketing at controlled spend (€8,165 in 2025) — kept lean while Google did the heavy lifting."
+                        }
+                  ],
+                  "resultMetrics": [
+                        {
+                              "value": "€614K",
+                              "label": "GA4 revenue in 2025 (+23.2% YoY)"
+                        },
+                        {
+                              "value": "25.05x",
+                              "label": "Blended ROAS on €24,515 total ad spend"
+                        },
+                        {
+                              "value": "17.56x",
+                              "label": "Google Ads ROAS (€287K conv. value)"
+                        },
+                        {
+                              "value": "1.11M",
+                              "label": "Sessions in 2025 (+15.56% YoY)"
+                        }
+                  ],
+                  "proof": "Google Analytics 4 · Real account data · Motorcycle Equipment E-Shop"
+            }
+      },
+      "aura": {
+            "el": {
+                  "eyebrow": "LIFESTYLE & BEAUTY · CONCEPT STORE",
+                  "headline": "+31.63% αύξηση τζίρου με -4.6% λιγότερο ad spend.",
+                  "intro": "Μια 360° συνεργασία — performance ads, newsletter, content calendar και στρατηγική προϊόντων — που μετέτρεψε το σπαταλημένο budget σε ακριβή, κερδοφόρα ανάπτυξη.",
+                  "heroMetrics": [
+                        {
+                              "value": "+31.63%",
+                              "label": "Αύξηση τζίρου YoY"
+                        },
+                        {
+                              "value": "6.56x",
+                              "label": "Blended ROAS"
+                        },
+                        {
+                              "value": "234.995",
+                              "label": "Sessions (+75.7%)"
+                        },
+                        {
+                              "value": "-4.6%",
+                              "label": "Ad spend vs προηγ. έτος"
+                        }
+                  ],
+                  "challengeTitle": "Πραγματική δύναμη brand, χωρίς στρατηγική υποδομή.",
+                  "challengeParas": [
+                        "Πριν τον Φεβρουάριο 2025, το ad budget του Aura διαχειριζόταν από άλλους διαφημιστές που ξόδευαν χωρίς λογοδοσία. Υψηλό κόστος, χαμηλή απόδοση — χρήμα που έφευγε χωρίς να επιστρέφει.",
+                        "Το ίδιο το brand είχε πραγματική αξία: premium eco-lifestyle τοποθέτηση με δυνατά προϊόντα. Όμως η στρατηγική υποδομή για να μετατραπεί αυτή η αξία σε κλιμακούμενη, κερδοφόρα απόδοση έλειπε."
+                  ],
+                  "solutionTitle": "Ολοκληρωμένη εμπορική στρατηγική, όχι απλώς διαφημίσεις.",
+                  "pillars": [
+                        {
+                              "title": "Performance reset",
+                              "text": "Google Ads (PMax, Search Branded, Demand Gen) + Meta (Shopping, Conversions, Remarketing, ATC) — αναδομημένα από την αρχή με την αποδοτικότητα, όχι την κλίμακα, ως πρωταρχικό KPI."
+                        },
+                        {
+                              "title": "Προϊόντα & προσφορές",
+                              "text": "Επιλογή hero προϊόντων, seasonal drops, product bundling και απόλυτα χρονισμένα promotional windows (Flash Sales, Black Friday, θεματικές προσφορές) σχεδιασμένα για conversion χωρίς υποτίμηση του brand."
+                        },
+                        {
+                              "title": "Newsletter, content & advisory",
+                              "text": "Στοχευμένες newsletter καμπάνιες, δομημένο content calendar και hands-on business consulting σε τιμολόγηση, γκάμα και στρατηγική προμηθευτών."
+                        }
+                  ],
+                  "resultMetrics": [
+                        {
+                              "value": "+31.63%",
+                              "label": "Αύξηση τζίρου (€90K → €119K)"
+                        },
+                        {
+                              "value": "-4.6%",
+                              "label": "Συνολικό ad spend vs 2024 (€19K → €18K)"
+                        },
+                        {
+                              "value": "6.56x",
+                              "label": "Blended ROAS σε €18,220 συνολικό spend"
+                        },
+                        {
+                              "value": "+75.7%",
+                              "label": "Αύξηση sessions, έφτασαν τις 234.995"
+                        }
+                  ],
+                  "proof": "Google Analytics 4 · Πραγματικά δεδομένα · Aura Concept Store"
+            },
+            "en": {
+                  "eyebrow": "LIFESTYLE & BEAUTY · CONCEPT STORE",
+                  "headline": "+31.63% revenue growth on -4.6% less ad spend.",
+                  "intro": "A 360° partnership — performance ads, newsletters, content calendar and product strategy — that turned wasted budget into precise, profitable growth.",
+                  "heroMetrics": [
+                        {
+                              "value": "+31.63%",
+                              "label": "Revenue growth YoY"
+                        },
+                        {
+                              "value": "6.56x",
+                              "label": "Blended ROAS"
+                        },
+                        {
+                              "value": "234,995",
+                              "label": "Sessions (+75.7%)"
+                        },
+                        {
+                              "value": "-4.6%",
+                              "label": "Ad spend vs prior year"
+                        }
+                  ],
+                  "challengeTitle": "Genuine brand strength, no strategic infrastructure.",
+                  "challengeParas": [
+                        "Before February 2025, Aura's ad budget was managed by other advertisers spending without accountability. High cost, low return — money leaving without coming back.",
+                        "The brand itself had genuine equity: a premium eco-lifestyle positioning with real product strength. But the strategic infrastructure to turn that equity into scalable, profitable performance was missing."
+                  ],
+                  "solutionTitle": "A complete commercial strategy, not just ads.",
+                  "pillars": [
+                        {
+                              "title": "Performance reset",
+                              "text": "Google Ads (PMax, Search Branded, Demand Gen) + Meta (Shopping, Conversions, Remarketing, ATC) — restructured from scratch with efficiency, not scale, as the primary KPI."
+                        },
+                        {
+                              "title": "Product & promotions",
+                              "text": "Hero product selection, seasonal drops, product bundling, and precisely timed promotional windows (Flash Sales, Black Friday, themed offers) designed to drive conversion without devaluing the brand."
+                        },
+                        {
+                              "title": "Newsletter, content & advisory",
+                              "text": "Targeted newsletter campaigns, a structured content calendar, and hands-on business consulting on pricing, range and supplier strategy."
+                        }
+                  ],
+                  "resultMetrics": [
+                        {
+                              "value": "+31.63%",
+                              "label": "Revenue growth (€90K → €119K)"
+                        },
+                        {
+                              "value": "-4.6%",
+                              "label": "Total ad spend vs 2024 (€19K → €18K)"
+                        },
+                        {
+                              "value": "6.56x",
+                              "label": "Blended ROAS on €18,220 total ad spend"
+                        },
+                        {
+                              "value": "+75.7%",
+                              "label": "Sessions growth, reaching 234,995"
+                        }
+                  ],
+                  "proof": "Google Analytics 4 · Real account data · Aura Concept Store"
+            }
+      },
+      "mg": {
+            "el": {
+                  "eyebrow": "ΕΙΔΗ ΤΕΧΝΟΛΟΓΙΑΣ · E-COMMERCE",
+                  "headline": "€3.99M σε τζίρο. €15K σε ad spend.",
+                  "intro": "Μια τετραετής, συνειδητά συντηρητική συνεργασία σε μια high-intent κατηγορία — όπου η πειθαρχία, όχι η κλίμακα, ήταν ολόκληρη η στρατηγική.",
+                  "heroMetrics": [
+                        {
+                              "value": "€3.99M",
+                              "label": "GA4 τζίρος (+30.59%)"
+                        },
+                        {
+                              "value": "262x",
+                              "label": "Blended ROAS"
+                        },
+                        {
+                              "value": "353x",
+                              "label": "Google Ads ROAS"
+                        },
+                        {
+                              "value": "€15.2K",
+                              "label": "Συνολικό ad spend"
+                        }
+                  ],
+                  "challengeTitle": "Μέγιστη απόδοση μέσα σε ένα σταθερό, αμετακίνητο budget.",
+                  "challengeParas": [
+                        "Ένα e-shop ειδών τεχνολογίας — μια κατηγορία που δομικά επιτρέπει εξαιρετικά υψηλό ROAS, λόγω υψηλής μέσης αξίας παραγγελίας και ισχυρού purchase intent. Σταθερός, ώριμος λογαριασμός υπό τη διαχείρισή μας από το 2022 έως αρχές 2026.",
+                        "Ο περιορισμός ήταν το ίδιο το brief. Ο πελάτης κρατούσε συνειδητά συντηρητικό budget, χωρίς διάθεση για επιθετική κλιμάκωση και χωρίς πίεση για επέκταση. Η δουλειά μας ήταν να βγάλουμε κάθε δυνατό ευρώ αξίας από ένα capped spend."
+                  ],
+                  "solutionTitle": "Hands-off εμπιστοσύνη. Hands-on βελτιστοποίηση.",
+                  "pillars": [
+                        {
+                              "title": "Λιτή δομή Google",
+                              "text": "Performance Max ως κύριος driver, σε συνδυασμό με στενή υπεράσπιση Branded Search. Καμία πειραματική σπατάλη, καμία επίδειξη — κάθε campaign δεμένη σε σκληρό ROAS floor."
+                        },
+                        {
+                              "title": "Meta για incremental αξία",
+                              "text": "Conversions, Advantage+ και Remarketing με ελεγχόμενο spend (€7,788), που έδωσαν €566K conv. value στα 72.8x ROAS — δυνατή υποστηρικτική γραμμή, όχι πρωταρχικό κανάλι."
+                        },
+                        {
+                              "title": "Ήσυχη, σταθερή διαχείριση",
+                              "text": "Ελάχιστα meetings, ελάχιστος θόρυβος. Η δουλειά γινόταν στη καθημερινή βελτιστοποίηση — και το αποτέλεσμα ήταν +30.59% YoY αύξηση τζίρου που το budget από μόνο του δεν θα μπορούσε να δώσει."
+                        }
+                  ],
+                  "resultMetrics": [
+                        {
+                              "value": "€3.99M",
+                              "label": "GA4 τζίρος το 2025 (+30.59% YoY)"
+                        },
+                        {
+                              "value": "262x",
+                              "label": "Blended ROAS σε €15,217 συνολικό spend"
+                        },
+                        {
+                              "value": "353x",
+                              "label": "Google Ads ROAS (€4.67M conv. value)"
+                        },
+                        {
+                              "value": "72.8x",
+                              "label": "Meta Ads ROAS (€566K conv. value)"
+                        }
+                  ],
+                  "proof": "Google Analytics 4 · Πραγματικά δεδομένα · Tech Products E-Shop"
+            },
+            "en": {
+                  "eyebrow": "TECHNOLOGY PRODUCTS · E-COMMERCE",
+                  "headline": "€3.99M in revenue. €15K in ad spend.",
+                  "intro": "A four-year, deliberately conservative partnership in a high-intent category — where discipline, not scale, was the entire strategy.",
+                  "heroMetrics": [
+                        {
+                              "value": "€3.99M",
+                              "label": "GA4 revenue (+30.59%)"
+                        },
+                        {
+                              "value": "262x",
+                              "label": "Blended ROAS"
+                        },
+                        {
+                              "value": "353x",
+                              "label": "Google Ads ROAS"
+                        },
+                        {
+                              "value": "€15.2K",
+                              "label": "Total ad spend"
+                        }
+                  ],
+                  "challengeTitle": "Maximum return inside a fixed, immovable budget.",
+                  "challengeParas": [
+                        "A technology products e-shop — a category that structurally allows for exceptionally high ROAS, thanks to high average order values and strong purchase intent. A stable, mature account under our management from 2022 through early 2026.",
+                        "The constraint was the brief itself. The client ran a deliberately conservative budget, with no appetite for aggressive scaling and no push for expansion. Our job was to extract every possible euro of value from a capped spend."
+                  ],
+                  "solutionTitle": "Hands-off trust. Hands-on optimisation.",
+                  "pillars": [
+                        {
+                              "title": "Lean Google structure",
+                              "text": "Performance Max as the primary driver, paired with tight Branded Search defence. No experimentation budget, no vanity spend — every campaign tied to a hard ROAS floor."
+                        },
+                        {
+                              "title": "Meta for incremental value",
+                              "text": "Conversions, Advantage+ and Remarketing at controlled spend (€7,788), delivering €566K conv. value at 72.8x ROAS — a strong supporting line, not a primary channel."
+                        },
+                        {
+                              "title": "Quiet, consistent management",
+                              "text": "Minimal client meetings, minimal noise. The work was in the daily optimisation — and the result was a +30.59% YoY revenue growth that the budget itself could not have delivered."
+                        }
+                  ],
+                  "resultMetrics": [
+                        {
+                              "value": "€3.99M",
+                              "label": "GA4 revenue in 2025 (+30.59% YoY)"
+                        },
+                        {
+                              "value": "262x",
+                              "label": "Blended ROAS on €15,217 total ad spend"
+                        },
+                        {
+                              "value": "353x",
+                              "label": "Google Ads ROAS (€4.67M conv. value)"
+                        },
+                        {
+                              "value": "72.8x",
+                              "label": "Meta Ads ROAS (€566K conv. value)"
+                        }
+                  ],
+                  "proof": "Google Analytics 4 · Real account data · Tech Products E-Shop"
+            }
+      },
+      "ianos": {
+            "el": {
+                  "eyebrow": "PREMIUM BOOKSTORE · E-COMMERCE & RETAIL",
+                  "headline": "Από -20% σε +12.4% μέσα σε επτά μήνες.",
+                  "intro": "Μια turnaround συνεργασία για ένα premium βιβλιοπωλείο. Αναλάβαμε τον λογαριασμό στα μέσα της χρονιάς υπό έντονη πίεση τζίρου — και αντιστρέψαμε την πορεία μέχρι το Q4.",
+                  "heroMetrics": [
+                        {
+                              "value": "-20%",
+                              "label": "Τάση τζίρου πριν την ανάληψη"
+                        },
+                        {
+                              "value": "-11.3%",
+                              "label": "Μετά από 4 μήνες (stabilization)"
+                        },
+                        {
+                              "value": "+12.4%",
+                              "label": "Q4 2025 YoY αύξηση"
+                        },
+                        {
+                              "value": "5x",
+                              "label": "Κανάλια στο νέο media mix"
+                        }
+                  ],
+                  "challengeTitle": "Ένα αγαπημένο brand που έχανε έδαφος, γρήγορα.",
+                  "challengeParas": [
+                        "Το βιβλιοπωλείο μπήκε στο 2025 υπό σημαντική πίεση. Κατά τους πρώτους πέντε μήνες του έτους, ο τζίρος κατέγραφε -20% σε σύγκριση με το αντίστοιχο διάστημα του 2024 — μια διατηρούμενη, επιταχυνόμενη πτώση παρά το ισχυρό brand equity και την engaged κοινότητα πελατών.",
+                        "Όταν αναλάβαμε τον Ιούνιο του 2025, η άμεση προτεραιότητα δεν ήταν η ανάπτυξη. Ήταν να σταματήσουμε την αιμορραγία. Η στρατηγική ερώτηση ήταν πώς θα σταθεροποιήσουμε την απόδοση τους πρώτους μήνες παρέμβασης, και μετά πώς θα σχεδιάσουμε μια μετρημένη επιστροφή σε ετήσια ανάπτυξη."
+                  ],
+                  "solutionTitle": "Ριζική αναδόμηση της paid-media αρχιτεκτονικής, κανάλι ανά κανάλι.",
+                  "pillars": [
+                        {
+                              "title": "Google: πλήρης restructure",
+                              "text": "Συνολικός επανασχεδιασμός καμπανιών — ανακατανομή budget, αναθεώρηση bidding strategies, και custom scripts για εντοπισμό αναποτελεσματικότητας. Q4 αποτέλεσμα: 186K clicks, 5.23% CTR, 5.464 conversions."
+                        },
+                        {
+                              "title": "Meta: hybrid Performance + Awareness",
+                              "text": "Επανασχεδιασμός από καθαρή βάση χωρίς ιστορικά δεδομένα — υβριδική στρατηγική που εξισορρόπησε awareness και performance. Q4 αποτέλεσμα: 4.40M impressions, 780K reach, 1.075 purchases."
+                        },
+                        {
+                              "title": "Διεύρυνση καναλιών",
+                              "text": "Προσθήκη TikTok, YouTube και email marketing σε συνεκτικό multi-channel mix — μετατρέποντας το reach του brand από περιορισμένο σε category-relevant."
+                        }
+                  ],
+                  "resultMetrics": [
+                        {
+                              "value": "-11.3%",
+                              "label": "Πτώση συγκρατήθηκε από -20% στους πρώτους 4 μήνες"
+                        },
+                        {
+                              "value": "+12.4%",
+                              "label": "Q4 2025 YoY αύξηση τζίρου — πλήρης αντιστροφή πορείας"
+                        },
+                        {
+                              "value": "1.075",
+                              "label": "Q4 Meta αγορές από μηδενικό ιστορικό λογαριασμό"
+                        },
+                        {
+                              "value": "5.464",
+                              "label": "Q4 Google Ads conversions (vs 4.392 προηγ. περίοδο)"
+                        }
+                  ],
+                  "proof": "Απόδειξη Απόδοσης · Η Πορεία: Πριν -20% → Stabilization -11.3% → Growth +12.4% YoY"
+            },
+            "en": {
+                  "eyebrow": "PREMIUM BOOKSTORE · E-COMMERCE & RETAIL",
+                  "headline": "From -20% to +12.4% in seven months.",
+                  "intro": "A turnaround engagement for a premium bookstore. Took on the account mid-year under severe revenue pressure — and reversed the trajectory by Q4.",
+                  "heroMetrics": [
+                        {
+                              "value": "-20%",
+                              "label": "Revenue trend pre-engagement"
+                        },
+                        {
+                              "value": "-11.3%",
+                              "label": "After 4 months (stabilization)"
+                        },
+                        {
+                              "value": "+12.4%",
+                              "label": "Q4 2025 YoY growth"
+                        },
+                        {
+                              "value": "5x",
+                              "label": "Channels in rebuilt media mix"
+                        }
+                  ],
+                  "challengeTitle": "A loved brand losing ground, fast.",
+                  "challengeParas": [
+                        "The bookstore entered 2025 under significant pressure. Across the first five months of the year, revenue was running -20% versus the same period in 2024 — a sustained, accelerating decline despite strong brand equity and an engaged customer base.",
+                        "When we took over in June 2025, the immediate priority wasn't growth. It was to stop the bleeding. The strategic question was how to stabilise performance in the first months of intervention, then engineer a measured return to year-on-year growth."
+                  ],
+                  "solutionTitle": "Rebuild the entire paid-media architecture, channel by channel.",
+                  "pillars": [
+                        {
+                              "title": "Google: full restructure",
+                              "text": "Complete campaign redesign — reallocated budget, revised bidding strategies, and deployed custom scripts to surface inefficiencies. Q4 result: 186K clicks, 5.23% CTR, 5,464 conversions."
+                        },
+                        {
+                              "title": "Meta: hybrid Performance + Awareness",
+                              "text": "Rebuilt from a clean base with no historical data — a hybrid strategy balancing brand awareness with direct performance. Q4 result: 4.40M impressions, 780K reach, 1,075 purchases."
+                        },
+                        {
+                              "title": "Channel expansion",
+                              "text": "Added TikTok, YouTube and email marketing into a coherent multi-channel mix — turning the brand's reach from constrained to category-relevant."
+                        }
+                  ],
+                  "resultMetrics": [
+                        {
+                              "value": "-11.3%",
+                              "label": "Decline contained from -20% in the first 4 months of work"
+                        },
+                        {
+                              "value": "+12.4%",
+                              "label": "Q4 2025 YoY revenue growth — full trajectory reversed"
+                        },
+                        {
+                              "value": "1,075",
+                              "label": "Q4 Meta purchases from a zero-history account"
+                        },
+                        {
+                              "value": "5,464",
+                              "label": "Q4 Google Ads conversions (vs 4,392 prior period)"
+                        }
+                  ],
+                  "proof": "Proof of Performance · The Trajectory: Pre -20% → Stabilization -11.3% → Growth +12.4% YoY"
+            }
+      },
+      "kbeauty": {
+            "el": {
+                  "eyebrow": "KOREAN BEAUTY · LEAD GENERATION",
+                  "headline": "692 ποιοτικά leads με €1.55 κόστος ανά lead.",
+                  "intro": "Καμπάνια lead generation για ένα Korean beauty brand — χτισμένη σε Meta και Google Search, σχεδιασμένη να συλλέγει high-intent prospects σε κλίμακα.",
+                  "heroMetrics": [
+                        {
+                              "value": "692",
+                              "label": "Leads (Form)"
+                        },
+                        {
+                              "value": "€1.55",
+                              "label": "Κόστος ανά Lead"
+                        },
+                        {
+                              "value": "234.178",
+                              "label": "Meta accounts reach"
+                        },
+                        {
+                              "value": "€2.003",
+                              "label": "Meta συνολικό spend"
+                        }
+                  ],
+                  "challengeTitle": "Μια niche κατηγορία beauty χωρίς αποδεδειγμένο lead-gen playbook.",
+                  "challengeParas": [
+                        "Η κατηγορία Korean beauty βρίσκεται σε μια ιδιαίτερη θέση: υψηλή awareness σε ένα παθιασμένο κοινό, αλλά κανένα καθιερωμένο lead-generation funnel για το brand. Οι περισσότεροι ανταγωνιστές τρέχουν αμιγώς e-commerce — δεν υπήρχε template προς αντιγραφή.",
+                        "Το brief ήταν σαφές: συλλογή ποιοτικών, intent-driven leads με χαμηλό κόστος ανά lead. Η ποσότητα μετρούσε, αλλά η ποιότητα μετρούσε περισσότερο. Κάθε lead έπρεπε να είναι κάποιος πραγματικά ενδιαφερόμενος, όχι ένα περιστασιακό click."
+                  ],
+                  "solutionTitle": "Δύο κανάλια, μία δουλειά: βρες τους σωστούς ανθρώπους, γρήγορα.",
+                  "pillars": [
+                        {
+                              "title": "Meta Lead Forms",
+                              "text": "Native Meta Lead Forms με ακριβή audience targeting — συλλογή ποιοτικών leads απευθείας μέσα στην πλατφόρμα, χωρίς landing-page friction. 692 leads με €1.55 CPL."
+                        },
+                        {
+                              "title": "Meta Traffic support",
+                              "text": "Παράλληλη Traffic καμπάνια έφερε 5.848 Landing Page Views με €0.16/view — τροφοδοτώντας cold prospects στο funnel και ζεσταίνοντας retargeting audiences για την Leads καμπάνια."
+                        },
+                        {
+                              "title": "Google Search prospecting",
+                              "text": "Στοχευμένη Search καμπάνια κατέγραψε high-intent queries με 9.337 clicks, €0.32 CPC και 11.17% CTR — πολύ πάνω από τα benchmarks της κατηγορίας."
+                        }
+                  ],
+                  "resultMetrics": [
+                        {
+                              "value": "692",
+                              "label": "Ποιοτικά leads μέσω Meta Lead Forms"
+                        },
+                        {
+                              "value": "€1.55",
+                              "label": "Κόστος ανά Lead, πολύ κάτω από τα benchmarks"
+                        },
+                        {
+                              "value": "11.17%",
+                              "label": "Google Search CTR (9.337 clicks, €0.32 CPC)"
+                        },
+                        {
+                              "value": "234K",
+                              "label": "Meta accounts reach και στις δύο καμπάνιες"
+                        }
+                  ],
+                  "proof": "Meta Ads Manager · Πραγματικά δεδομένα · Korean Beauty Lead-Gen Campaign"
+            },
+            "en": {
+                  "eyebrow": "KOREAN BEAUTY · LEAD GENERATION",
+                  "headline": "692 qualified leads at €1.55 per lead.",
+                  "intro": "A lead-generation campaign for a Korean beauty brand — built on Meta and Google Search, designed to capture high-intent prospects at scale.",
+                  "heroMetrics": [
+                        {
+                              "value": "692",
+                              "label": "Leads (Form)"
+                        },
+                        {
+                              "value": "€1.55",
+                              "label": "Cost per Lead"
+                        },
+                        {
+                              "value": "234,178",
+                              "label": "Meta accounts reached"
+                        },
+                        {
+                              "value": "€2,003",
+                              "label": "Meta total spend"
+                        }
+                  ],
+                  "challengeTitle": "A niche beauty category with no proven lead-gen playbook.",
+                  "challengeParas": [
+                        "The Korean beauty category sits in a curious position: high awareness among a passionate niche, but no established lead-generation funnel for the brand. Most competitors run pure e-commerce — there was no template to copy.",
+                        "The brief was sharper: capture qualified, intent-driven leads at a tight cost per lead. Volume mattered, but quality mattered more. Each lead had to be someone genuinely interested, not just a curious click."
+                  ],
+                  "solutionTitle": "Two channels, one job: find the right people, fast.",
+                  "pillars": [
+                        {
+                              "title": "Meta Lead Forms",
+                              "text": "Native Meta Lead Forms with precise audience targeting — collecting qualified leads directly inside the platform, no landing-page friction. 692 leads at €1.55 CPL across the engagement window."
+                        },
+                        {
+                              "title": "Meta Traffic support",
+                              "text": "A complementary Traffic campaign drove 5,848 Landing Page Views at €0.16 per view — feeding cold prospects into the funnel and warming retargeting audiences for the Leads campaign."
+                        },
+                        {
+                              "title": "Google Search prospecting",
+                              "text": "A targeted Search campaign captured high-intent queries with 9,337 clicks at €0.32 CPC and an 11.17% CTR — far above category benchmarks for awareness-stage prospects."
+                        }
+                  ],
+                  "resultMetrics": [
+                        {
+                              "value": "692",
+                              "label": "Qualified leads generated via Meta Lead Forms"
+                        },
+                        {
+                              "value": "€1.55",
+                              "label": "Cost per Lead — well below industry benchmarks"
+                        },
+                        {
+                              "value": "11.17%",
+                              "label": "Google Search CTR (9,337 clicks, €0.32 CPC)"
+                        },
+                        {
+                              "value": "234K",
+                              "label": "Meta accounts reached across both campaigns"
+                        }
+                  ],
+                  "proof": "Meta Ads Manager · Real account data · Korean Beauty Lead-Gen Campaign"
+            }
       }
-      pdfModal.classList.add('open');
+};
+
+    const sectionLabels = {
+      el: { challenge: 'Η Αφετηρία', solution: 'Η Λύση', results: 'Τα Αποτελέσματα' },
+      en: { challenge: 'The Challenge', solution: 'The Solution', results: 'The Results' }
+    };
+
+    const caseModal = document.getElementById('caseModal');
+    const caseModalClose = document.getElementById('caseModalClose');
+    const caseEyebrow = document.getElementById('caseEyebrow');
+    const caseHeadline = document.getElementById('caseHeadline');
+    const caseIntro = document.getElementById('caseIntro');
+    const caseHeroMetrics = document.getElementById('caseHeroMetrics');
+    const caseChallengeLabel = document.getElementById('caseChallengeLabel');
+    const caseChallengeTitle = document.getElementById('caseChallengeTitle');
+    const caseChallengeBody = document.getElementById('caseChallengeBody');
+    const caseSolutionLabel = document.getElementById('caseSolutionLabel');
+    const caseSolutionTitle = document.getElementById('caseSolutionTitle');
+    const casePillars = document.getElementById('casePillars');
+    const caseResultsLabel = document.getElementById('caseResultsLabel');
+    const caseResultMetrics = document.getElementById('caseResultMetrics');
+    const caseProof = document.getElementById('caseProof');
+    const caseModalCta = document.getElementById('caseModalCta');
+
+    let activeCaseId = null;
+
+    function renderMetric(m) {
+      return `<div class="case-metric"><span class="case-metric-value">${m.value}</span><span class="case-metric-label">${m.label}</span></div>`;
+    }
+    function renderPillar(p) {
+      return `<div class="case-pillar"><h4>${p.title}</h4><p>${p.text}</p></div>`;
+    }
+
+    function populateCase() {
+      if (!activeCaseId || !caseStudies[activeCaseId]) return;
+      const d = caseStudies[activeCaseId][currentLang];
+      caseEyebrow.textContent = d.eyebrow;
+      caseHeadline.textContent = d.headline;
+      caseIntro.textContent = d.intro;
+      caseHeroMetrics.innerHTML = d.heroMetrics.map(renderMetric).join('');
+      caseChallengeLabel.textContent = sectionLabels[currentLang].challenge;
+      caseChallengeTitle.textContent = d.challengeTitle;
+      caseChallengeBody.innerHTML = d.challengeParas.map(p => `<p>${p}</p>`).join('');
+      caseSolutionLabel.textContent = sectionLabels[currentLang].solution;
+      caseSolutionTitle.textContent = d.solutionTitle;
+      casePillars.innerHTML = d.pillars.map(renderPillar).join('');
+      caseResultsLabel.textContent = sectionLabels[currentLang].results;
+      caseResultMetrics.innerHTML = d.resultMetrics.map(renderMetric).join('');
+      caseProof.textContent = d.proof;
+    }
+
+    function openCase(caseId) {
+      if (!caseStudies[caseId]) return;
+      activeCaseId = caseId;
+      populateCase();
+      caseModal.classList.add('open');
       document.body.classList.add('modal-open');
+      caseModal.scrollTop = 0;
+      const inner = caseModal.querySelector('.case-modal-inner');
+      if (inner) inner.scrollTop = 0;
     }
-    function closePdf() {
-      pdfModal.classList.remove('open');
+    function closeCase() {
+      caseModal.classList.remove('open');
       document.body.classList.remove('modal-open');
-      // unload iframe after the close animation
-      setTimeout(() => { pdfFrame.src = 'about:blank'; }, 350);
+      activeCaseId = null;
     }
-    pdfClose.addEventListener('click', closePdf);
-    pdfModal.addEventListener('click', (e) => {
-      if (e.target === pdfModal) closePdf();
+    caseModalClose.addEventListener('click', closeCase);
+    caseModal.addEventListener('click', (e) => {
+      if (e.target === caseModal) closeCase();
     });
+    caseModalCta.addEventListener('click', () => closeCase());
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && pdfModal.classList.contains('open')) closePdf();
+      if (e.key === 'Escape' && caseModal.classList.contains('open')) closeCase();
     });
 
-    // ─── case card → open PDF modal in current language ───
+    // ─── case card → open case modal ───
     document.querySelectorAll('.case-card').forEach(card => {
       card.addEventListener('click', e => {
         e.preventDefault();
-        const pdf = currentLang === 'el' ? card.dataset.pdfEl : card.dataset.pdfEn;
-        const title = currentLang === 'el' ? card.dataset.titleEl : card.dataset.titleEn;
-        if (pdf) openPdf(pdf, title);
+        const id = card.dataset.caseId;
+        if (id) openCase(id);
       });
     });
 
